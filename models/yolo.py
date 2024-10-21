@@ -93,8 +93,8 @@ class Detect(nn.Module):
         self.inplace = inplace  # use inplace ops (e.g. slice assignment)
 
     def forward(self, x):
-        print(x)
-        print(self.callback_func)
+        # print(x)
+        # print(self.callback_func)
         """Processes input through YOLOv5 layers, altering shape for detection: `x(bs, 3, ny, nx, 85)`."""
         z = []  # inference output
         for i in range(self.nl):
