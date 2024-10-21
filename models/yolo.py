@@ -116,9 +116,9 @@ class Detect(nn.Module):
                     y = torch.cat((xy, wh, conf), 4)
                 z.append(y.view(bs, self.na * nx * ny, self.no))
         
-        if Detect.callback_func is not None:
-            Detect.callback_func(x[1])
-            Detect.callback_func = None
+        if self.callback_func is not None:
+            self.callback_func(x[1])
+            self.callback_func = None
 
         return x if self.training else (torch.cat(z, 1),) if self.export else (torch.cat(z, 1), x)
 
