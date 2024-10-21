@@ -72,6 +72,9 @@ except ImportError:
 class Detect(nn.Module):
     """YOLOv5 Detect head for processing input tensors and generating detection outputs in object detection models."""
 
+    # custom callback
+    callback_func = None
+
     stride = None  # strides computed during build
     dynamic = False  # force grid reconstruction
     export = False  # export mode
@@ -112,6 +115,10 @@ class Detect(nn.Module):
                     wh = (wh * 2) ** 2 * self.anchor_grid[i]  # wh
                     y = torch.cat((xy, wh, conf), 4)
                 z.append(y.view(bs, self.na * nx * ny, self.no))
+        
+        if Detect.callback_func is not None:
+            Detect.callback_func(x[1])
+            Detect.callback_func = None
 
         return x if self.training else (torch.cat(z, 1),) if self.export else (torch.cat(z, 1), x)
 
